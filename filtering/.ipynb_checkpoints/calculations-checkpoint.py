@@ -41,8 +41,8 @@ def concat_jp(path):
 
 ###calculate anomalies
 def anomalies(ds, ds_filtered, savepath):
-    ds=xr.open_dataset(ds)
-    ds_filtered=xr.open_dataset(ds_filtered)
+    ds=xr.open_dataset(ds, chunks={'xt_ocean':'auto', 'yt_ocean':'auto'})
+    ds_filtered=xr.open_dataset(ds_filtered, chunks={'xt_ocean':'auto', 'yt_ocean':'auto'})
     dsa=ds-ds_filtered
     dsa.to_netcdf(savepath)
     return dsa
@@ -52,15 +52,22 @@ def anomalies(ds, ds_filtered, savepath):
 def corr(dsa):
     corr=[]
     for var in list(dsa.keys()):
-        if var != 'SSH':
+        if 'SSH' not in var and '1PctTo2X' not in var:
             corrssh=xr.corr(dsa.SSH, dsa[var], dim='time')
             corrssh.name='corr_ssh_'+var
             corr.append(corrssh)
-        if var != 'SST':
+        if 'SST' not in var and '1PctTo2X' not in var:
             corrsst=xr.corr(dsa.SST, dsa[var], dim='time')
             corrsst.name='corr_sst_'+var
             corr.append(corrsst)
-    
+        if 'SSH' not in var and '1PctTo2X' in var:
+            corrsshcc=xr.corr(dsa.SSH_1PctTo2X, dsa[var], dim='time')
+            corrsshcc.name='corr_ssh_'+var+'_1PctTo2X'
+            corr.append(corrsshcc)
+        if 'SST' not in var and '1PctTo2X' in var:
+            corrsstcc=xr.corr(dsa.SST_1PctTo2X, dsa[var], dim='time')
+            corrsstcc.name='corr_sst_'+var+'_1PctTo2X'
+            corr.append(corrsstcc)
     correlations=xr.merge(corr)
     return correlations
 
