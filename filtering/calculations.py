@@ -1,9 +1,9 @@
 import xarray as xr
 import numpy as np
 
-####concat data
 
 def concat_data(path):
+    ####concat data mainly important to rename and regrid the SST and SSH files. I think I didn't really use the function in the end, the regridding and renaming of x and y should be enough and then the data can be merged with cdo
     ds_fluxes=[]
     ds_ssh_sst=[]
     ds_heat=[]
@@ -23,6 +23,7 @@ def concat_data(path):
     return ds
 
 def concat_jp(path):
+    ###for concatenating all jp_files and integrating over the upper 100m, for mld this can also easily done with cdo
     ds_jp=[]
     #ds_mld=[]
     ###put all the years in one file
@@ -39,7 +40,7 @@ def concat_jp(path):
     ds=xr.merge([ds_jp])#, ds_mld])
     return ds
 
-###calculate anomalies
+###calculate anomalies (absolute field - smoothed field)
 def anomalies(ds, ds_filtered, savepath):
     ds=xr.open_dataset(ds, chunks={'xt_ocean':'auto', 'yt_ocean':'auto'})
     ds_filtered=xr.open_dataset(ds_filtered, chunks={'xt_ocean':'auto', 'yt_ocean':'auto'})
@@ -47,9 +48,10 @@ def anomalies(ds, ds_filtered, savepath):
     dsa.to_netcdf(savepath)
     return dsa
 
-####simple correlation function
+
 
 def corr(dsa):
+    ####simple correlation function for correlations with SSH and SST, returns dataset
     corr=[]
     for var in list(dsa.keys()):
         if 'SSH' not in var and '1PctTo2X' not in var:
@@ -77,8 +79,8 @@ def corr_all(anopath, savepath):
     correlations=corr(dsa)
     correlations.to_netcdf(savepath)
 
-### seasonal correlation 
 def seas_corr(dsapath, savepath):
+    ### calculates seasonal correlation 
     dsa=xr.open_dataset(dsapath, chunks='auto')
     DJF=dsa.where(dsa.time.dt.month.isin([1,2,12]), drop=True)
     MAM=dsa.where(dsa.time.dt.month.isin([3,4,5]), drop=True)
