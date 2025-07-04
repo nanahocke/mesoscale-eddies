@@ -11,9 +11,8 @@ Use **JupyterLab** to run the scripts. For HPC setup, refer to:
 [GEOMAR Jupyter on HPC Setup Guide](https://git.geomar.de/python/jupyter_on_HPC_setup_guide)
 ### Installation of dependencies
 ``````bash
-https://raw.githubusercontent.com/nanahocke/mesoscale-eddies/main/mesoscale.yml -o mesoscale.yml 
+curl -X GET "https://raw.githubusercontent.com/nanahocke/mesoscale-eddies/main/mesoscale.yml" -o mesoscale.yml 
 conda env create -f mesoscale.yml 
-conda activate mesoscale
 ``````
 
 ## Repository Structure
