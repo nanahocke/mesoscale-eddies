@@ -39,8 +39,8 @@ conda env create -f mesoscale.yml
 ### `plotting/` folder
 
 #### Most relevant:
-- `Categorization_new.ipynb`: It's basically the same idea as in Categorization_no_wind but this time several options with wind. In the lower part of the script, some scatter analysis was done by picking random points based on some criteria and the last function calculates the slope and Anticyclone/Cyclones means/medians of certain variables
-- `Boxplots.ipynb`: This script contains a function to plot larger amounts of data based on categories as binned boxplots. Due to memory problems, plotting over all 120 timesteps is not yet possible. This script has a dependency on the Categorization script, so please run them first
+- `Categorization_new.ipynb`: It's basically the same idea as in Categorization_no_wind but this time several options with wind. 
+- `Boxplots.ipynb`: This script contains a function to plot larger amounts of data based on categories as binned boxplots. Due to memory problems, plotting over all 120 timesteps is not yet possible. This script has a dependency on the Categorization script, so please run them first. In the lower part of the script, some scatter analysis was done by picking random points based on some criteria and the last function calculates the slope and Anticyclone/Cyclones means/medians of certain variables
 - `Anticyclones-Cyclones.ipynb`: the mesoscale phenomena were separated into anticyclonic and cyclonic based on the sea surface temperature anomaly. Then, their average FCO2 and FO2 anomalies were separately calculated (maps) as well as a global average (bar plots)
 - `Global_Maps.ipynb`: the global fluxes (absolute and mesoscale) were plotted to get an overview on the amplitude of the mesoscale gas fluxes compared to the absolutes.
 
