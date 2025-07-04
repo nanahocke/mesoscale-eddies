@@ -1,5 +1,7 @@
 from astropy.convolution import Box2DKernel, convolve
+from scipy.ndimage import generic_filter
 import xarray as xr
+import numpy as np
 
 ####these are the functions for filtering the data, if you have netcdf dataset with various variables, use filtering(ds) (for a mean filtered field) or filtering_meidan(ds). The return will be a dataset of filtered fields. 
 ####If you just have one variable as a datarray (x,y and time), then you can directly apply Data_3D(data) or Data_3D_median(data) and you will receive a dataset of the filtered field which contains this one variable for all time steps.
@@ -36,17 +38,15 @@ def filtering(ds, size=30, time='time'):
 
 #####MEDIAN FILTER
 
-def Boxfilterfilter_median(data, size):
+def Boxfilterfilter_median(data, size=30):
     ## filtering a 2D-field, 30 x 30 data points --> for a 0.1° resolution this is a 3°x3° filter
-    ## here, a median filter is used (np.nanmedian) and the data is weighted by the area
-    area= xr.open_dataset('/gxfs_work/geomar/smomw577/mesoscale_eddies/BOX_filtered/0181-0190/ocean_grid.nc').area_t
-    data=data*area
-    filtered_data = generic_filter(data, np.nanmedian, size=size, mode="wrap") #wrap --> periodic boundaries
-    filtered_data = filtered_data/area
-    filtered_data = data.copy(data=filtered_data)
+    ## here, a median filter is used (np.nanmedian)
+    filtered_data = generic_filter(data, np.nanmedian, size=size, mode="wrap") ##wrap -->periodic boundaries
+    filtered_data=data.copy(data=filtered_data)
     return filtered_data
 
-def Data_3D_median(data, time, size):
+
+def Data_3D_median(data, time='time', size=30):
     #filters for every time step, need to specify time --> 'month', 'time'
     res=[]
     for date in data[time]:

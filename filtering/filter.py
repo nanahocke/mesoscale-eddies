@@ -1,5 +1,7 @@
 from astropy.convolution import Box2DKernel, convolve
+from scipy.ndimage import generic_filter
 import xarray as xr
+import numpy as np
 
 ####these are the functions for filtering the data, if you have netcdf dataset with various variables, use filtering(ds) (for a mean filtered field) or filtering_meidan(ds). The return will be a dataset of filtered fields. 
 ####If you just have one variable as a datarray (x,y and time), then you can directly apply Data_3D(data) or Data_3D_median(data) and you will receive a dataset of the filtered field which contains this one variable for all time steps.

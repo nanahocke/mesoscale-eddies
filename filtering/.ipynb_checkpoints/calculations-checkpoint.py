@@ -42,8 +42,8 @@ def concat_jp(path):
 
 ###calculate anomalies (absolute field - smoothed field)
 def anomalies(ds, ds_filtered, savepath):
-    ds=xr.open_dataset(ds, chunks={'xt_ocean':'auto', 'yt_ocean':'auto'})
-    ds_filtered=xr.open_dataset(ds_filtered, chunks={'xt_ocean':'auto', 'yt_ocean':'auto'})
+    ds=xr.open_dataset(ds)
+    ds_filtered=xr.open_dataset(ds_filtered)
     dsa=ds-ds_filtered
     dsa.to_netcdf(savepath)
     return dsa
